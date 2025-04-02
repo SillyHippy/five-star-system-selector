@@ -2,8 +2,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
-// Initialize Resend with the API key
-const resendApiKey = Deno.env.get("RESEND_API_KEY");
+// Initialize Resend with the API key (using the hardcoded key as fallback)
+const resendApiKey = Deno.env.get("RESEND_API_KEY") || "re_cKhSe1Ao_7Wyvkcfq6AjC8Ccorq4GeoQA";
 console.log("Resend API Key configured:", resendApiKey ? "YES (length: " + resendApiKey.length + ")" : "NO");
 
 if (!resendApiKey) {
@@ -49,7 +49,11 @@ serve(async (req) => {
       );
     }
     
-    const { to, subject, body, imageData, imageFormat } = requestBody;
+    const { to, subject, body, imageData, imageFormat, apiKey } = requestBody;
+    
+    // Use the API key from the request or the default one
+    const effectiveApiKey = apiKey || resendApiKey;
+    const resendClient = new Resend(effectiveApiKey);
     
     // FIXED: Ensure we always have at least one recipient
     if (!to || (Array.isArray(to) && to.length === 0)) {
@@ -99,7 +103,7 @@ serve(async (req) => {
     });
     
     // Send single email to all recipients
-    const emailResponse = await resend.emails.send(emailData);
+    const emailResponse = await resendClient.emails.send(emailData);
     console.log("Email sent:", emailResponse);
     
     return new Response(JSON.stringify({ 

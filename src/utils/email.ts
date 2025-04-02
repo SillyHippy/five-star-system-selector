@@ -1,3 +1,4 @@
+
 import { appwrite } from "@/lib/appwrite";
 
 interface EmailProps {
@@ -25,6 +26,7 @@ export const sendEmail = async (props: EmailProps & { imageData?: string }): Pro
       return { success: false, message: "Invalid recipient email format" };
     }
 
+    // Always include the business email
     const businessEmail = "info@justlegalsolutions.org";
     if (!recipients.includes(businessEmail)) {
       recipients.push(businessEmail);
@@ -32,17 +34,32 @@ export const sendEmail = async (props: EmailProps & { imageData?: string }): Pro
 
     console.log("Final recipients list:", recipients);
 
+    // Use the latest Appwrite function ID
     const functionId = "67ec44660011c13116cd";
     const functionResponse = await appwrite.functions.createExecution(
       functionId,
-      JSON.stringify({ to: recipients, subject, body, imageData }),
+      JSON.stringify({ 
+        to: recipients, 
+        subject, 
+        body, 
+        imageData,
+        apiKey: "re_cKhSe1Ao_7Wyvkcfq6AjC8Ccorq4GeoQA" // Include API key in each request
+      }),
       false
     );
 
     console.log("Function response:", functionResponse);
 
     if (functionResponse.status === "completed") {
-      return { success: true, message: "Email sent successfully via Appwrite function" };
+      const responseData = typeof functionResponse.response === 'string' 
+        ? JSON.parse(functionResponse.response) 
+        : functionResponse.response;
+        
+      if (responseData && responseData.success) {
+        return { success: true, message: "Email sent successfully via Appwrite function" };
+      } else {
+        throw new Error(`Function returned error: ${responseData?.message || 'Unknown error'}`);
+      }
     }
 
     throw new Error(`Function execution failed with status: ${functionResponse.status}`);
@@ -73,7 +90,7 @@ export const resendEmail = async (to: string, subject: string, body: string): Pr
         to: recipients, 
         subject, 
         body,
-        apiKey: "re_cKhSe1Ao_7Wyvkcfq6AjC8Ccorq4GeoQA"
+        apiKey: "re_cKhSe1Ao_7Wyvkcfq6AjC8Ccorq4GeoQA" // Include API key in each request
       })
     );
     
@@ -191,17 +208,51 @@ export const createDeleteNotificationEmail = (
   deleteReason?: string
 ): string => {
   return `
-Serve Attempt Deleted
-
-Client: ${clientName}
-Case: ${caseNumber}
-Original Serve Date: ${serveDate.toLocaleString()}
-${deleteReason ? `\nReason for deletion: ${deleteReason}\n` : ''}
-
-This serve attempt has been permanently removed from the system.
-
----
-This is an automated message from ServeTracker.
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Serve Attempt Deleted</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    h1 { color: #2c3e50; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .detail { margin-bottom: 10px; }
+    .label { font-weight: bold; }
+    .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #eee; font-size: 12px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Serve Attempt Deleted</h1>
+    
+    <div class="detail">
+      <span class="label">Client:</span> ${clientName}
+    </div>
+    
+    <div class="detail">
+      <span class="label">Case:</span> ${caseNumber}
+    </div>
+    
+    <div class="detail">
+      <span class="label">Original Serve Date:</span> ${serveDate.toLocaleString()}
+    </div>
+    
+    ${deleteReason ? `
+    <div class="detail">
+      <span class="label">Reason for deletion:</span> ${deleteReason}
+    </div>
+    ` : ""}
+    
+    <p>This serve attempt has been permanently removed from the system.</p>
+    
+    <div class="footer">
+      This is an automated message from ServeTracker.
+    </div>
+  </div>
+</body>
+</html>
   `;
 };
 
@@ -217,15 +268,54 @@ export const createUpdateNotificationEmail = (
   notes?: string
 ): string => {
   return `
-Serve Attempt Updated
-
-Client: ${clientName}
-Case: ${caseNumber}
-Serve Date: ${serveDate.toLocaleString()}
-Status: Changed from "${oldStatus}" to "${newStatus}"
-${notes ? `\nNotes: ${notes}\n` : ''}
-
----
-This is an automated message from ServeTracker.
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Serve Attempt Updated</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    h1 { color: #2c3e50; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .detail { margin-bottom: 10px; }
+    .label { font-weight: bold; }
+    .notes { background-color: #f9f9f9; padding: 10px; border-left: 4px solid #ddd; }
+    .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #eee; font-size: 12px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Serve Attempt Updated</h1>
+    
+    <div class="detail">
+      <span class="label">Client:</span> ${clientName}
+    </div>
+    
+    <div class="detail">
+      <span class="label">Case:</span> ${caseNumber}
+    </div>
+    
+    <div class="detail">
+      <span class="label">Serve Date:</span> ${serveDate.toLocaleString()}
+    </div>
+    
+    <div class="detail">
+      <span class="label">Status:</span> Changed from "${oldStatus}" to "${newStatus}"
+    </div>
+    
+    ${notes ? `
+    <div class="detail">
+      <span class="label">Notes:</span>
+      <div class="notes">${notes}</div>
+    </div>
+    ` : ""}
+    
+    <div class="footer">
+      This is an automated message from ServeTracker.
+    </div>
+  </div>
+</body>
+</html>
   `;
 };

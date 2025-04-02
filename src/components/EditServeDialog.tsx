@@ -46,15 +46,17 @@ const statusDisplayMap: Record<string, string> = {
 };
 
 export default function EditServeDialog({ serve, open, onOpenChange, onSave }: EditServeDialogProps) {
-  const [status, setStatus] = useState<"completed" | "failed">(serve.status as "completed" | "failed");
-  const [caseNumber, setCaseNumber] = useState<string>(serve.caseNumber || "");
-  const [notes, setNotes] = useState<string>(serve.notes || "");
+  // Fix the TypeScript errors by not passing initialization values directly to useState
+  const [status, setStatus] = useState<"completed" | "failed">("completed");
+  const [caseNumber, setCaseNumber] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
   const [isSaving, setIsSaving] = useState(false);
   const [clientEmail, setClientEmail] = useState<string | null>(null);
   const [clientName, setClientName] = useState<string>("Client");
-  const [coordinates, setCoordinates] = useState<any>(serve.coordinates || {});
+  const [coordinates, setCoordinates] = useState<any>({});
   const { toast } = useToast();
 
+  // Initialize the state values when the serve prop changes
   useEffect(() => {
     setStatus(serve.status as "completed" | "failed");
     setCaseNumber(serve.caseNumber || "");

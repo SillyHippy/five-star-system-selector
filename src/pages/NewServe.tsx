@@ -1,12 +1,14 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ServeAttempt, { ServeAttemptData } from "@/components/ServeAttempt";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { appwrite } from "@/lib/appwrite";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { isGeolocationCoordinates } from "@/utils/gps";
 import { ClientData } from '@/components/ClientForm';
+import { sendEmail, createServeEmailBody } from "@/utils/email";
 
 interface NewServeProps {
   clients: any[];
@@ -21,6 +23,7 @@ const NewServe: React.FC<NewServeProps> = ({ clients, addServe }) => {
 
   const [caseAttempts, setCaseAttempts] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (clientId && caseNumber) {
@@ -93,6 +96,56 @@ const NewServe: React.FC<NewServeProps> = ({ clients, addServe }) => {
         ...serveData,
         coordinates: formattedCoordinates, // Ensure coordinates are a string
       });
+
+      // Send email notification for the new serve attempt
+      try {
+        // Get client info
+        const client = clients.find(c => c.id === serveData.clientId || c.$id === serveData.clientId);
+        
+        if (client && client.email && serveData.coordinates) {
+          console.log("Sending serve attempt email notification to:", client.email);
+          
+          const clientName = client.name || "Client";
+          const address = serveData.address || "Unknown Address";
+          const coords = typeof serveData.coordinates === 'string' 
+            ? { 
+                latitude: parseFloat(serveData.coordinates.split(',')[0]), 
+                longitude: parseFloat(serveData.coordinates.split(',')[1])
+              } 
+            : serveData.coordinates;
+          
+          if (coords && typeof coords === 'object' && 'latitude' in coords && 'longitude' in coords) {
+            const timestamp = new Date(serveData.timestamp || new Date());
+            const attemptNumber = serveData.attemptNumber || 1;
+            
+            const emailBody = createServeEmailBody(
+              clientName,
+              address,
+              serveData.notes || "",
+              timestamp,
+              coords as GeolocationCoordinates,
+              attemptNumber,
+              serveData.caseNumber
+            );
+            
+            const emailResult = await sendEmail({
+              to: client.email,
+              subject: `Process Serve Attempt #${attemptNumber} - ${serveData.caseNumber || serveData.caseName}`,
+              body: emailBody,
+              imageData: serveData.imageData
+            });
+            
+            if (emailResult.success) {
+              console.log("Email sent successfully for new serve attempt");
+            } else {
+              console.error("Failed to send email for new serve attempt:", emailResult.message);
+            }
+          }
+        }
+      } catch (emailError) {
+        console.error("Error sending serve attempt email:", emailError);
+        // Don't block the save operation if email fails
+      }
 
       toast({
         title: "Serve recorded",

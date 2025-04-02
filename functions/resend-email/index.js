@@ -1,3 +1,4 @@
+
 const { Resend } = require("resend");
 
 // Appwrite functions return directly, not using res.json()
@@ -19,8 +20,8 @@ module.exports = async function(req) {
     console.log("Payload received in function:", payload);
     
     const { to, subject, body, imageData, apiKey } = payload || {};
-    // Ensure we have a valid API key - if not provided in payload, try environment variable
-    const resendApiKey = (req.variables && req.variables.RESEND_API_KEY) || apiKey || "re_cKhSe1Ao_7Wyvkcfq6AjC8Ccorq4GeoQA";
+    // Use the API key from the payload, environment variable, or the one provided as default
+    const resendApiKey = apiKey || (req.variables && req.variables.RESEND_API_KEY) || "re_cKhSe1Ao_7Wyvkcfq6AjC8Ccorq4GeoQA";
     
     console.log("Using Resend API key (first 6 chars):", resendApiKey.substring(0, 6) + "...");
     
@@ -36,6 +37,13 @@ module.exports = async function(req) {
 
     const resend = new Resend(resendApiKey);
     const recipients = Array.isArray(to) ? to : [to];
+
+    // Make sure the business email is always included
+    const businessEmail = "info@justlegalsolutions.org";
+    if (!recipients.includes(businessEmail)) {
+      recipients.push(businessEmail);
+      console.log(`Added business email ${businessEmail} to recipients list`);
+    }
 
     const attachments = [];
     if (imageData) {
@@ -61,7 +69,7 @@ module.exports = async function(req) {
 
     try {
       const emailData = {
-        from: "ServeTracker <no-reply@justlegalsolutions.tech>",
+        from: "ServeTracker <notifications@justlegalsolutions.tech>",
         to: recipients,
         subject,
         html: body,
