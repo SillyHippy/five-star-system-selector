@@ -1,3 +1,4 @@
+
 import { Client, Account, Databases, Storage, ID, Query, Teams, Functions } from 'appwrite';
 import { APPWRITE_CONFIG } from '@/config/backendConfig';
 
@@ -254,22 +255,46 @@ export const appwrite = {
         throw new Error("Image data is required for serve attempts.");
       }
 
+      // Get client data to ensure we have client_name
+      let clientName = serveData.clientName || "Unknown Client";
+      if (clientName === "Unknown Client") {
+        try {
+          const client = await this.databases.getDocument(
+            this.DATABASE_ID,
+            this.CLIENTS_COLLECTION_ID,
+            serveData.clientId
+          );
+          if (client && client.name) {
+            clientName = client.name;
+          }
+        } catch (clientError) {
+          console.warn("Could not fetch client name:", clientError);
+        }
+      }
+
       // Format coordinates as string if needed
       const coordinates = typeof serveData.coordinates === 'string' 
         ? serveData.coordinates 
-        : `${serveData.coordinates.latitude},${serveData.coordinates.longitude}`;
+        : (serveData.coordinates 
+          ? `${serveData.coordinates.latitude},${serveData.coordinates.longitude}`
+          : null);
 
-      // Create document
+      // Generate document ID
+      const documentId = ID.unique();
+
+      // Create document with all required fields
       const response = await this.databases.createDocument(
         this.DATABASE_ID,
         this.SERVE_ATTEMPTS_COLLECTION_ID,
-        ID.unique(),
+        documentId,
         {
-          client_id: serveData.clientId, // Make sure this is set correctly
+          client_id: serveData.clientId,
+          client_name: clientName,
           case_number: serveData.caseNumber || null,
           case_name: serveData.caseName || "Unknown Case",
           status: serveData.status || "unknown",
           notes: serveData.notes || "",
+          address: serveData.address || "",
           coordinates: coordinates,
           image_data: serveData.imageData,
           timestamp: serveData.timestamp ? serveData.timestamp.toISOString() : new Date().toISOString(),
@@ -282,9 +307,9 @@ export const appwrite = {
 
       // Create local version with client name
       const localServe = {
-        id: response.$id, // Make sure id is set from $id
-        clientId: serveData.clientId, // Use original clientId from serveData
-        clientName: serveData.clientName || "Unknown Client",
+        id: response.$id,
+        clientId: serveData.clientId,
+        clientName: clientName,
         caseNumber: response.case_number || "Unknown",
         caseName: response.case_name || "Unknown Case",
         coordinates: response.coordinates || null,
@@ -293,6 +318,7 @@ export const appwrite = {
         timestamp: response.timestamp ? new Date(response.timestamp) : new Date(),
         attemptNumber: response.attempt_number || 1,
         imageData: response.image_data || null,
+        address: response.address || "",
       };
 
       // Update local storage
@@ -315,26 +341,60 @@ export const appwrite = {
     try {
       console.log("Updating serve attempt with data:", serveData);
 
+      // Get the document ID - could be string or object with id/$id
       const docId = typeof serveId === 'object' ? (serveId.id || serveId.$id) : serveId;
 
       if (!docId) {
         throw new Error("Valid serve ID is required for updating");
       }
 
-      // Exclude `id` from the payload as it's not part of the schema
-      const { id, ...validServeData } = serveData;
-
-      const response = await databases.updateDocument(
+      // First, fetch the current document to preserve original data
+      const originalDoc = await this.databases.getDocument(
         DATABASE_ID,
         SERVE_ATTEMPTS_COLLECTION_ID,
-        docId,
-        validServeData
+        docId
       );
 
-      // Sync with local storage
-      await this.syncAppwriteServesToLocal();
+      console.log("Original document:", originalDoc);
 
-      return response;
+      // Prepare update data - only include fields that are actually being changed
+      const updateData = {};
+      
+      // Only update fields that are explicitly provided in serveData
+      if (serveData.notes !== undefined) updateData.notes = serveData.notes;
+      if (serveData.status !== undefined) updateData.status = serveData.status;
+      if (serveData.case_number !== undefined) updateData.case_number = serveData.case_number;
+      if (serveData.case_name !== undefined) updateData.case_name = serveData.case_name;
+      if (serveData.coordinates !== undefined) updateData.coordinates = serveData.coordinates;
+      if (serveData.imageData !== undefined) updateData.image_data = serveData.imageData;
+      if (serveData.address !== undefined) updateData.address = serveData.address;
+      
+      // Never update these fields when editing
+      // - timestamp (preserve original)
+      // - attempt_number (preserve original)
+      // - client_id (preserve original relationship)
+
+      console.log("Updating document with fields:", updateData);
+
+      // Only perform update if there are fields to update
+      if (Object.keys(updateData).length > 0) {
+        const response = await databases.updateDocument(
+          DATABASE_ID,
+          SERVE_ATTEMPTS_COLLECTION_ID,
+          docId,
+          updateData
+        );
+
+        console.log("Update response:", response);
+
+        // Sync with local storage
+        await this.syncAppwriteServesToLocal();
+
+        return response;
+      } else {
+        console.log("No fields to update");
+        return originalDoc; // Return original document if no updates
+      }
     } catch (error) {
       console.error('Error updating serve attempt:', error);
       throw error;
