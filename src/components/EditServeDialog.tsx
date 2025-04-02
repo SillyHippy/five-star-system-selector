@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -128,8 +127,8 @@ export default function EditServeDialog({ serve, open, onOpenChange, onSave }: E
               clientName,
               caseNumber,
               new Date(serve.timestamp),
-              statusDisplayMap[serve.status],
-              statusDisplayMap[status],
+              statusDisplayMap[serve.status] || serve.status,
+              statusDisplayMap[status] || status,
               notes
             );
             

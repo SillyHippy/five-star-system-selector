@@ -78,8 +78,12 @@ export function addClientNamesToServes(serves: ServeAttemptData[], clients: Clie
       return serve;
     }
 
-    // Find matching client
-    const client = clients.find(c => c.id === serve.clientId || c.$id === serve.clientId);
+    // Find matching client - check both id and $id properties
+    const client = clients.find(c => {
+      // Handle both ClientData and raw Appwrite document formats
+      const clientId = c.id || (c as any).$id;
+      return clientId === serve.clientId;
+    });
     
     // Return updated serve with client name if found
     if (client) {

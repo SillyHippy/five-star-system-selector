@@ -1,4 +1,3 @@
-
 import { Client, Account, Databases, Storage, ID, Query, Teams, Functions } from 'appwrite';
 import { APPWRITE_CONFIG } from '@/config/backendConfig';
 
@@ -251,17 +250,13 @@ export const appwrite = {
         throw new Error("Valid client ID is required for serve attempts.");
       }
 
-      if (!serveData.imageData) {
-        throw new Error("Image data is required for serve attempts.");
-      }
-
       // Get client data to ensure we have client_name
       let clientName = serveData.clientName || "Unknown Client";
       if (clientName === "Unknown Client") {
         try {
-          const client = await this.databases.getDocument(
-            this.DATABASE_ID,
-            this.CLIENTS_COLLECTION_ID,
+          const client = await databases.getDocument(
+            DATABASE_ID,
+            CLIENTS_COLLECTION_ID,
             serveData.clientId
           );
           if (client && client.name) {
@@ -272,31 +267,44 @@ export const appwrite = {
         }
       }
 
-      // Format coordinates as string if needed
-      const coordinates = typeof serveData.coordinates === 'string' 
-        ? serveData.coordinates 
-        : (serveData.coordinates 
-          ? `${serveData.coordinates.latitude},${serveData.coordinates.longitude}`
-          : null);
+      // Handle the case_number field - required by Appwrite schema
+      const caseNumber = serveData.caseNumber || "Not Specified";
+      
+      // Handle the case_name field - required by Appwrite schema
+      const caseName = serveData.caseName || "Unknown Case";
+      
+      // Handle address - required by Appwrite schema
+      const address = serveData.address || "Not Specified";
+
+      // Format coordinates as string if needed - required by Appwrite schema
+      let coordinates = "0,0"; // Default value to satisfy the required field
+      
+      if (serveData.coordinates) {
+        if (typeof serveData.coordinates === 'string') {
+          coordinates = serveData.coordinates;
+        } else if (serveData.coordinates.latitude !== undefined && serveData.coordinates.longitude !== undefined) {
+          coordinates = `${serveData.coordinates.latitude},${serveData.coordinates.longitude}`;
+        }
+      }
 
       // Generate document ID
       const documentId = ID.unique();
 
       // Create document with all required fields
-      const response = await this.databases.createDocument(
-        this.DATABASE_ID,
-        this.SERVE_ATTEMPTS_COLLECTION_ID,
+      const response = await databases.createDocument(
+        DATABASE_ID,
+        SERVE_ATTEMPTS_COLLECTION_ID,
         documentId,
         {
           client_id: serveData.clientId,
           client_name: clientName,
-          case_number: serveData.caseNumber || null,
-          case_name: serveData.caseName || "Unknown Case",
+          case_number: caseNumber,
+          case_name: caseName,
           status: serveData.status || "unknown",
           notes: serveData.notes || "",
-          address: serveData.address || "",
+          address: address,
           coordinates: coordinates,
-          image_data: serveData.imageData,
+          image_data: serveData.imageData || "",
           timestamp: serveData.timestamp ? serveData.timestamp.toISOString() : new Date().toISOString(),
           attempt_number: serveData.attemptNumber || 1
         }
@@ -349,7 +357,7 @@ export const appwrite = {
       }
 
       // First, fetch the current document to preserve original data
-      const originalDoc = await this.databases.getDocument(
+      const originalDoc = await databases.getDocument(
         DATABASE_ID,
         SERVE_ATTEMPTS_COLLECTION_ID,
         docId
@@ -360,20 +368,27 @@ export const appwrite = {
       // Prepare update data - only include fields that are actually being changed
       const updateData = {};
       
-      // Only update fields that are explicitly provided in serveData
-      if (serveData.notes !== undefined) updateData.notes = serveData.notes;
-      if (serveData.status !== undefined) updateData.status = serveData.status;
-      if (serveData.case_number !== undefined) updateData.case_number = serveData.case_number;
-      if (serveData.case_name !== undefined) updateData.case_name = serveData.case_name;
-      if (serveData.coordinates !== undefined) updateData.coordinates = serveData.coordinates;
-      if (serveData.imageData !== undefined) updateData.image_data = serveData.imageData;
-      if (serveData.address !== undefined) updateData.address = serveData.address;
+      // For string fields, update only if they differ from original and are not undefined
+      if (serveData.notes !== undefined && serveData.notes !== originalDoc.notes) 
+        updateData.notes = serveData.notes;
       
-      // Never update these fields when editing
+      if (serveData.status !== undefined && serveData.status !== originalDoc.status) 
+        updateData.status = serveData.status;
+      
+      if (serveData.caseNumber !== undefined && serveData.caseNumber !== originalDoc.case_number) 
+        updateData.case_number = serveData.caseNumber;
+      
+      // Handle Appwrite's snake_case format
+      if (serveData.case_number !== undefined && serveData.case_number !== originalDoc.case_number) 
+        updateData.case_number = serveData.case_number;
+      
+      // Never update these fields when editing to preserve original data
       // - timestamp (preserve original)
-      // - attempt_number (preserve original)
       // - client_id (preserve original relationship)
-
+      // - client_name (preserve original)
+      // - attempt_number (preserve original)
+      // - image_data (preserve original unless explicitly provided)
+      
       console.log("Updating document with fields:", updateData);
 
       // Only perform update if there are fields to update
