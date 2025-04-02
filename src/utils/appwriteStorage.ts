@@ -1,3 +1,4 @@
+
 import { appwrite } from "@/lib/appwrite";
 import { v4 as uuidv4 } from "uuid";
 import { ServeAttemptData } from "@/components/ServeAttempt";
@@ -66,9 +67,20 @@ export async function getDocumentUrl(filePath: string): Promise<string | null> {
 
 export async function deleteClientDocument(id: string, filePath: string): Promise<boolean> {
   try {
-    return await appwrite.deleteClientDocument(id, filePath);
+    console.log(`Attempting to delete document with ID: ${id} and filePath: ${filePath}`);
+    // Use appwrite's deleteClientDocument method to delete the document
+    const success = await appwrite.deleteClientDocument(id, filePath);
+    
+    // Log the result for debugging
+    if (success) {
+      console.log(`Successfully deleted document with ID: ${id}`);
+    } else {
+      console.log(`Failed to delete document with ID: ${id}`);
+    }
+    
+    return success;
   } catch (error) {
-    console.error("Error deleting document:", error);
+    console.error("Error in deleteClientDocument:", error);
     return false;
   }
 }
@@ -122,3 +134,4 @@ export async function exportServeData(startDate: Date, endDate: Date): Promise<{
     return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
   }
 }
+

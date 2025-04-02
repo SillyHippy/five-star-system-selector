@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { 
   Card, 
@@ -28,6 +29,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { 
   File, 
   FileText, 
@@ -38,7 +50,7 @@ import {
   FileCheck,
   Briefcase
 } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ACTIVE_BACKEND, BACKEND_PROVIDER } from '@/config/backendConfig';
 import * as appwriteStorage from '@/utils/appwriteStorage';
@@ -61,6 +73,9 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
   const [description, setDescription] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [documentToDelete, setDocumentToDelete] = useState<UploadedDocument | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const isMobile = useIsMobile();
   
   const storage = appwriteStorage;
@@ -85,11 +100,7 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
       setDocuments(docs);
     } catch (error) {
       console.error("Error loading documents:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load documents",
-        variant: "destructive"
-      });
+      toast.error("Failed to load documents");
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +127,6 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
     if (!selectedFile) {
       toast.error("No file selected", {
         description: "Please select a file to upload",
-        position: "bottom-right"
       });
       return;
     }
@@ -129,14 +139,12 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
       const uploaded = await storage.uploadClientDocument(
         clientId,
         selectedFile,
-        selectedCase || undefined,
+        selectedCase === "no_case" ? undefined : selectedCase || undefined,
         description || undefined
       );
       
       if (uploaded) {
-        toast.success("Document uploaded successfully", {
-          position: "bottom-right"
-        });
+        toast.success("Document uploaded successfully");
         
         setDocuments([uploaded, ...documents]);
         setSelectedFile(null);
@@ -157,14 +165,12 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
       } else {
         toast.error("Upload failed", {
           description: "There was a problem uploading the document",
-          position: "bottom-right"
         });
       }
     } catch (error) {
       console.error("Error in upload handler:", error);
       toast.error("Upload failed", {
         description: "There was a problem uploading the document",
-        position: "bottom-right"
       });
     } finally {
       setIsUploading(false);
@@ -183,45 +189,50 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
         a.click();
         window.document.body.removeChild(a);
         
-        toast.success("Document download started", {
-          position: "bottom-right"
-        });
+        toast.success("Document download started");
       } else {
         toast.error("Download failed", {
           description: "Unable to generate download link",
-          position: "bottom-right"
         });
       }
     } catch (error) {
       console.error("Error downloading document:", error);
       toast.error("Download failed", {
         description: "An error occurred while downloading",
-        position: "bottom-right"
       });
     }
   };
 
-  const handleDelete = async (document: UploadedDocument) => {
+  const confirmDeleteDocument = (document: UploadedDocument) => {
+    setDocumentToDelete(document);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!documentToDelete) return;
+    
+    setIsDeleting(true);
     try {
-      const success = await storage.deleteClientDocument(document.id, document.filePath);
+      console.log("Deleting document:", documentToDelete);
+      const success = await storage.deleteClientDocument(documentToDelete.id, documentToDelete.filePath);
       
       if (success) {
-        setDocuments(documents.filter(doc => doc.id !== document.id));
-        toast.success("Document deleted successfully", {
-          position: "bottom-right"
-        });
+        setDocuments(documents.filter(doc => doc.id !== documentToDelete.id));
+        toast.success("Document deleted successfully");
+        setDeleteDialogOpen(false);
       } else {
         toast.error("Delete failed", {
           description: "There was a problem deleting the document",
-          position: "bottom-right"
         });
       }
     } catch (error) {
       console.error("Error deleting document:", error);
       toast.error("Delete failed", {
         description: "An error occurred while deleting",
-        position: "bottom-right"
       });
+    } finally {
+      setIsDeleting(false);
+      setDocumentToDelete(null);
     }
   };
 
@@ -421,7 +432,7 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
                           variant="outline"
                           size="icon"
                           className="text-destructive hover:bg-destructive/10"
-                          onClick={() => handleDelete(doc)}
+                          onClick={() => confirmDeleteDocument(doc)}
                           title="Delete"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -435,6 +446,30 @@ export default function ClientDocuments({ clientId, clientName, caseNumber, onUp
           </div>
         )}
       </CardContent>
+
+      <AlertDialog 
+        open={deleteDialogOpen} 
+        onOpenChange={setDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Document</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{documentToDelete?.fileName}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete} 
+              disabled={isDeleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }

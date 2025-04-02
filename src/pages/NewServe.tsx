@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ServeAttempt, { ServeAttemptData } from "@/components/ServeAttempt";
@@ -51,7 +50,7 @@ const NewServe: React.FC<NewServeProps> = ({ clients, addServe }) => {
     }
   };
 
-  const handleServeComplete = async (serveData: ServeAttemptData) => {
+  const handleServeComplete = async (serveData: ServeAttemptData & { address?: string }) => {
     console.log("Serve complete, data:", serveData);
 
     if (!isGeolocationCoordinates(serveData.coordinates)) {
