@@ -9,7 +9,6 @@ interface ShareModalProps {
 }
 
 export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
-  const [copySuccess, setCopySuccess] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const cardUrl = typeof window !== 'undefined' ? window.location.href : '';
 
@@ -34,8 +33,6 @@ export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(cardUrl);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
@@ -54,7 +51,7 @@ export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
           >
             <div className="flex items-center">
               <Image src="/images/personal.svg" alt="Link" width={24} height={24} />
-              <span className="ml-3 text-gray-800">{copySuccess ? "Link Copied!" : "Copy Card Link"}</span>
+              <span className="ml-3 text-gray-800">Copy Card Link</span>
             </div>
             <Image src="/landingpage/icons/copy.svg" alt="Copy" width={24} height={24} />
           </div>

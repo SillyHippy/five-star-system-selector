@@ -1,15 +1,12 @@
 "use client";
-
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
 
 export default function CalendarPage() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const { toast } = useToast();
-  const router = useRouter();
 
   const handleDownload = async () => {
     try {
@@ -47,14 +44,17 @@ END:VCALENDAR`;
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'Reminder.ics'; // updated file name
+      link.download = 'just-legal-solutions-reminder.ics';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-      // Removed success toast
-      router.push('/');
+      toast({
+        title: "Calendar Reminder",
+        description: "Your reminder has been downloaded successfully.",
+        duration: 3000,
+      });
     } catch (error) {
       toast({
         title: "Error",
@@ -74,7 +74,6 @@ END:VCALENDAR`;
           <h1 className="text-[28px] text-white mb-4">Add Calendar Reminder</h1>
           <p className="text-gray-300">Schedule a follow-up reminder with Just Legal Solutions</p>
         </div>
-
         {/* Date/Time Selection */}
         <div className="space-y-4 mb-6">
           <div>
@@ -103,7 +102,6 @@ END:VCALENDAR`;
             />
           </div>
         </div>
-
         {/* Download Button */}
         <button
           onClick={handleDownload}
@@ -124,13 +122,12 @@ END:VCALENDAR`;
           </span>
           <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
         </button>
-
         {/* Back Button */}
         <a
-          href="/"
+          href="/card"
           className="mt-4 w-full flex items-center justify-center text-gray-400 hover:text-white transition-colors py-3"
         >
-          ← Back to Home
+          ← Back to Contact Card
         </a>
       </div>
     </div>

@@ -2,17 +2,28 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'; // Import useRouter for navigation
 import ShareModal from './ShareModal';
 
 export default function CardPage() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const router = useRouter(); // Initialize router
 
   const handleShareClick = () => setIsShareModalOpen(true);
   const handleCloseShareModal = () => setIsShareModalOpen(false);
 
   const handleResumeClick = () => setIsResumeModalOpen(true);
   const handleCloseResumeModal = () => setIsResumeModalOpen(false);
+
+  const handleCalendarClick = () => setIsCalendarOpen(true);
+  const handleCloseCalendar = () => setIsCalendarOpen(false);
+
+  const handleDateSelection = (date: string) => {
+    alert(`Reminder set for ${date}`);
+    setIsCalendarOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-[#0B132B] flex items-center justify-center p-4">
@@ -127,17 +138,17 @@ export default function CardPage() {
           </a>
 
           <a
-            href="/card/calendar"
-            className="flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition"
+            onClick={handleCalendarClick}
+            className="flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition cursor-pointer"
           >
             <Image
-              src="/landingpage/icons/calendar-reminder-icon.svg"
+              src="/landingpage/icons/calendar.svg"
               alt="Calendar"
               width={40}
               height={40}
               className="mr-4"
             />
-            Add a Reminder
+            Add Calendar Reminder
             <span className="ml-auto text-xl">→</span>
           </a>
 
@@ -186,7 +197,8 @@ export default function CardPage() {
 
       {/* Resume Modal */}
       {isResumeModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50">
+        // Changed modal container alignment from items-end to items-center
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-t-lg p-6 w-full max-w-[420px] shadow-lg">
             <h2 className="text-xl font-bold mb-4 text-gray-800">Select a Resume</h2>
             <div className="space-y-3">
@@ -249,6 +261,41 @@ export default function CardPage() {
             </div>
             <button
               onClick={handleCloseResumeModal}
+              className="mt-4 w-full bg-[#3B82F6] text-white py-2 rounded-lg hover:bg-[#2563EB] transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Calendar Modal */}
+      {isCalendarOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-[420px] shadow-lg">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Select a Date</h2>
+            <div className="grid grid-cols-1 gap-4">
+              {Array.from({ length: 7 }).map((_, index) => {
+                const date = new Date();
+                date.setDate(date.getDate() + index);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  month: 'short',
+                  day: 'numeric',
+                });
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleDateSelection(formattedDate)}
+                    className="p-4 bg-[#2D3748] text-white rounded-lg hover:bg-[#4A5568] transition"
+                  >
+                    {formattedDate}
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              onClick={handleCloseCalendar}
               className="mt-4 w-full bg-[#3B82F6] text-white py-2 rounded-lg hover:bg-[#2563EB] transition-colors"
             >
               Close

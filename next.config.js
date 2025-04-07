@@ -5,9 +5,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  // Add trailing slash to match traditional .html behavior
-  trailingSlash: true,
+  trailingSlash: true, // Ensure trailing slash for routes
 };
 
-// Export the config directly - don't use redirects with export mode
 module.exports = nextConfig;
