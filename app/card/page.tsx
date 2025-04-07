@@ -1,17 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import ShareModal from './ShareModal';
 
 export default function CardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
   const handleShareClick = () => setIsModalOpen(true);
-  const handleResumeClick = () => setIsResumeModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-  const handleCloseResumeModal = () => setIsResumeModalOpen(false);
 
   return (
     <div className="min-h-screen bg-[#0B132B] flex items-center justify-center p-4">

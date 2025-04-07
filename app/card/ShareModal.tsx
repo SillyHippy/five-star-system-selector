@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 
@@ -77,8 +79,8 @@ export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50">
-      <div ref={modalRef} className="bg-white rounded-t-lg p-6 w-full max-w-[400px]">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div ref={modalRef} className="bg-white rounded-lg p-6 w-full max-w-[400px]">
         <h2 className="text-xl font-bold mb-4">Share Joseph Iannazzi's Digital Business Card</h2>
         <div className="space-y-3">
           {/* Copy Card Link - Full button clickable */}
