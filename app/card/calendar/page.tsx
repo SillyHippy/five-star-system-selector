@@ -16,9 +16,8 @@ export default function CalendarPage() {
 
       setIsDownloading(true);
 
-      // Create calendar event with selected date/time
       const eventDate = new Date(`${date}T${time}`);
-      const endDate = new Date(eventDate.getTime() + 60 * 60 * 1000); // 1 hour duration
+      const endDate = new Date(eventDate.getTime() + 60 * 60 * 1000);
 
       const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -36,12 +35,11 @@ LOCATION:Tulsa, OK
 END:VEVENT
 END:VCALENDAR`;
 
-      // Create and download the file
       const blob = new Blob([icsContent], { type: 'text/calendar' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'just-legal-solutions-reminder.ics';
+      link.download = 'joseph-iannazzi-reminder.ics';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -57,14 +55,12 @@ END:VCALENDAR`;
 
   return (
     <div className="min-h-screen bg-[#0B132B] flex items-center justify-center p-4">
-      <div className="bg-[#1C2541] rounded-[15px] p-6 max-w-[420px] w-full shadow-lg">
-        {/* Header Section */}
+      <div className="bg-[#1C2541] rounded-lg p-6 max-w-[420px] w-full shadow-lg">
         <div className="text-center mb-8">
           <h1 className="text-[28px] text-white mb-4">Add Calendar Reminder</h1>
-          <p className="text-gray-300">Schedule a follow-up reminder with Just Legal Solutions</p>
+          <p className="text-gray-300">Schedule a follow-up reminder with Joseph Iannazzi</p>
         </div>
 
-        {/* Date/Time Selection */}
         <div className="space-y-4 mb-6">
           <div>
             <label htmlFor="date" className="block text-sm font-medium text-gray-300 mb-2">
@@ -93,31 +89,19 @@ END:VCALENDAR`;
           </div>
         </div>
 
-        {/* Download Button */}
         <button
           onClick={handleDownload}
           disabled={isDownloading}
-          className={`w-full relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg transition-colors group ${
-            isDownloading ? 'opacity-75' : 'hover:bg-[#4A5568]'
+          className={`w-full bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition ${
+            isDownloading ? 'opacity-75' : ''
           }`}
         >
-          <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[62px] h-[62px]">
-            <img
-              src="/landingpage/icons/calendar-reminder-icon.svg"
-              alt="Calendar"
-              className="w-full h-full"
-            />
-          </div>
-          <span className="pl-12 text-base">
-            {isDownloading ? 'Downloading...' : 'Download Calendar Reminder'}
-          </span>
-          <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
+          {isDownloading ? 'Downloading...' : 'Download Calendar Reminder'}
         </button>
 
-        {/* Back Button */}
         <a
           href="/card"
-          className="mt-4 w-full flex items-center justify-center text-gray-400 hover:text-white transition-colors py-3"
+          className="mt-4 block text-center text-gray-400 hover:text-white transition"
         >
           ← Back to Contact Card
         </a>

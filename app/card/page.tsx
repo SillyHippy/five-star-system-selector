@@ -5,14 +5,18 @@ import Image from 'next/image';
 import ShareModal from './ShareModal';
 
 export default function CardPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
-  const handleShareClick = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleShareClick = () => setIsShareModalOpen(true);
+  const handleCloseShareModal = () => setIsShareModalOpen(false);
+
+  const handleResumeClick = () => setIsResumeModalOpen(true);
+  const handleCloseResumeModal = () => setIsResumeModalOpen(false);
 
   return (
     <div className="min-h-screen bg-[#0B132B] flex items-center justify-center p-4">
-      <div className="bg-[#1C2541] rounded-lg p-6 max-w-[420px] w-full shadow-lg relative">
+      <div className="bg-[#1C2541] rounded-lg p-6 max-w-[420px] w-full shadow-lg relative space-y-6">
         {/* Share Icon */}
         <button
           onClick={handleShareClick}
@@ -28,7 +32,7 @@ export default function CardPage() {
         </button>
 
         {/* Profile Section */}
-        <div className="flex items-center mb-6">
+        <div className="flex items-center mb-4">
           <div className="w-[90px] h-[90px] bg-white rounded-full overflow-hidden mr-4">
             <Image
               src="/images/personal.jpeg"
@@ -40,17 +44,23 @@ export default function CardPage() {
           </div>
           <div>
             <h2 className="text-[26px] font-bold text-white">Joseph Iannazzi</h2>
-            <p className="text-gray-400">HR Compliance Leader</p>
           </div>
         </div>
 
-        {/* Info Section */}
-        <div className="mb-6">
-          <h1 className="text-[22px] text-white mb-4">About Me</h1>
-          <p className="text-gray-300">
-            Legal & Logistics Operations Manager, Project Management Expert,
-            Driving Efficiency in Multisector Environments.
-          </p>
+        {/* Gray Buttons Section */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
+            HR Compliance Leader
+          </span>
+          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
+            Legal & Logistics Operations Manager
+          </span>
+          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
+            Project Management Expert
+          </span>
+          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
+            Driving Efficiency in Multisector Environments
+          </span>
         </div>
 
         {/* Buttons Section */}
@@ -67,7 +77,8 @@ export default function CardPage() {
               height={40}
               className="mr-4"
             />
-            Download My Contact Details
+            Download my contact details
+            <span className="ml-auto text-xl">→</span>
           </a>
 
           <a
@@ -81,7 +92,8 @@ export default function CardPage() {
               height={40}
               className="mr-4"
             />
-            Email Me
+            Email
+            <span className="ml-auto text-xl">→</span>
           </a>
 
           <a
@@ -95,7 +107,8 @@ export default function CardPage() {
               height={40}
               className="mr-4"
             />
-            Call Me
+            Call
+            <span className="ml-auto text-xl">→</span>
           </a>
 
           <a
@@ -109,7 +122,8 @@ export default function CardPage() {
               height={40}
               className="mr-4"
             />
-            Send a Text
+            Send Text Message
+            <span className="ml-auto text-xl">→</span>
           </a>
 
           <a
@@ -124,6 +138,7 @@ export default function CardPage() {
               className="mr-4"
             />
             Add a Reminder
+            <span className="ml-auto text-xl">→</span>
           </a>
 
           <a
@@ -140,12 +155,107 @@ export default function CardPage() {
               className="mr-4"
             />
             LinkedIn
+            <span className="ml-auto text-xl">→</span>
           </a>
+
+          {/* Resume Button */}
+          <button
+            onClick={handleResumeClick}
+            className="flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition w-full"
+          >
+            <Image
+              src="/landingpage/icons/document.svg"
+              alt="Resume"
+              width={40}
+              height={40}
+              className="mr-4"
+            />
+            View Resumes
+            <span className="ml-auto text-xl">→</span>
+          </button>
+        </div>
+
+        {/* Resume Description */}
+        <div className="mt-6 text-center text-sm text-gray-400">
+          Due to holding multiple hats while working for a small business, these are my tailored resumes towards specific roles.
         </div>
       </div>
 
       {/* Share Modal */}
-      <ShareModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal} />
+
+      {/* Resume Modal */}
+      {isResumeModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50">
+          <div className="bg-white rounded-t-lg p-6 w-full max-w-[420px] shadow-lg">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Select a Resume</h2>
+            <div className="space-y-3">
+              <a
+                href="/resumes/Administrative Assistant - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Administrative Assistant Resume
+              </a>
+              <a
+                href="/resumes/Project Manager - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Project Manager Resume
+              </a>
+              <a
+                href="/resumes/Process Server - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Process Server Resume
+              </a>
+              <a
+                href="/resumes/Payroll - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Payroll Resume
+              </a>
+              <a
+                href="/resumes/Office Assistant - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Office Assistant Resume
+              </a>
+              <a
+                href="/resumes/Legal Assistant - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Legal Assistant Resume
+              </a>
+              <a
+                href="/resumes/Human Resources Assistant - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Human Resources Assistant Resume
+              </a>
+              <a
+                href="/resumes/Executive Assistant - Resume.pdf"
+                download
+                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
+              >
+                Executive Assistant Resume
+              </a>
+            </div>
+            <button
+              onClick={handleCloseResumeModal}
+              className="mt-4 w-full bg-[#3B82F6] text-white py-2 rounded-lg hover:bg-[#2563EB] transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
