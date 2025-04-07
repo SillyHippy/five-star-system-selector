@@ -87,7 +87,7 @@ export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
             onClick={handleCopyLink}
           >
             <div className="flex items-center">
-              <Image src="/favicon1.svg" alt="Link" width={24} height={24} />
+              <Image src="/images/personal.svg" alt="Link" width={24} height={24} />
               <span className="ml-3">{copySuccess ? "Link Copied!" : "Copy Card Link"}</span>
             </div>
             <div className="flex items-center">
