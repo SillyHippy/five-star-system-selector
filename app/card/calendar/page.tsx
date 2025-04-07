@@ -1,27 +1,21 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
 
 export default function CalendarPage() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const { toast } = useToast();
 
   const handleDownload = async () => {
     try {
       if (!date || !time) {
-        toast({
-          title: "Required Fields",
-          description: "Please select both date and time for your reminder.",
-          duration: 3000,
-        });
+        alert("Please select both date and time for your reminder.");
         return;
       }
 
       setIsDownloading(true);
-      
+
       // Create calendar event with selected date/time
       const eventDate = new Date(`${date}T${time}`);
       const endDate = new Date(eventDate.getTime() + 60 * 60 * 1000); // 1 hour duration
@@ -53,17 +47,9 @@ END:VCALENDAR`;
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-      toast({
-        title: "Calendar Reminder",
-        description: "Your reminder has been downloaded successfully.",
-        duration: 3000,
-      });
+      alert("Your reminder has been downloaded successfully.");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to download the reminder. Please try again.",
-        duration: 3000,
-      });
+      alert("Failed to download the reminder. Please try again.");
     } finally {
       setIsDownloading(false);
     }
