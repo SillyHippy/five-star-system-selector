@@ -6,15 +6,24 @@ import ShareModal from './ShareModal';
 
 export default function CardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
   const handleShareClick = () => {
     console.log("Share icon clicked");
     setIsModalOpen(true);
   };
 
+  const handleResumeClick = () => {
+    setIsResumeModalOpen(true);
+  };
+
   const handleCloseModal = () => {
     console.log("Modal closed");
     setIsModalOpen(false);
+  };
+
+  const handleCloseResumeModal = () => {
+    setIsResumeModalOpen(false);
   };
 
   useEffect(() => {
@@ -144,9 +153,120 @@ export default function CardPage() {
             <span className="pl-12 text-base">Website</span>
             <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
           </a>
+
+          {/* LinkedIn Button */}
+          <a
+            href="https://www.linkedin.com/in/joseph-iannazzi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group"
+          >
+            <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[60px] h-[60px] flex items-center justify-center">
+              <Image
+                src="/landingpage/icons/linkedin.svg"
+                alt="LinkedIn"
+                width={60}
+                height={60}
+                className="w-full h-full"
+              />
+            </div>
+            <span className="pl-12 text-base">LinkedIn</span>
+            <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
+          </a>
+
+          {/* Resume Button */}
+          <button
+            onClick={handleResumeClick}
+            className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group w-full"
+          >
+            <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[60px] h-[60px]">
+              <Image
+                src="/landingpage/icons/document.svg"
+                alt="Resume"
+                width={60}
+                height={60}
+                className="w-full h-full"
+              />
+            </div>
+            <span className="pl-12 text-base">View Resumes</span>
+            <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
+          </button>
         </div>
       </div>
       <ShareModal isOpen={isModalOpen} onClose={handleCloseModal} />
+
+      {/* Resume Modal */}
+      {isResumeModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-[400px]">
+            <h2 className="text-xl font-bold mb-4">Select a Resume</h2>
+            <div className="space-y-3">
+              <a
+                href="/resumes/Project Manager - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Project Manager Resume
+              </a>
+              <a
+                href="/resumes/Process Server - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Process Server Resume
+              </a>
+              <a
+                href="/resumes/Payroll - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Payroll Resume
+              </a>
+              <a
+                href="/resumes/Office Assistant - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Office Assistant Resume
+              </a>
+              <a
+                href="/resumes/Legal Assistant - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Legal Assistant Resume
+              </a>
+              <a
+                href="/resumes/Human Resources Assistant - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Human Resources Assistant Resume
+              </a>
+              <a
+                href="/resumes/Executive Assistant - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Executive Assistant Resume
+              </a>
+              <a
+                href="/resumes/Administrative Assistant - Resume.pdf"
+                download
+                className="block bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Administrative Assistant Resume
+              </a>
+            </div>
+            <button
+              onClick={handleCloseResumeModal}
+              className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
