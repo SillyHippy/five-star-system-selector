@@ -28,14 +28,16 @@ export default function CalendarPage() {
 
       const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Just Legal Solutions//Calendar Reminder//EN
+PRODID:-//Joseph Iannazzi//Calendar Reminder//EN
 BEGIN:VEVENT
-UID:${Date.now()}@justlegalsolutions.org
+UID:${Date.now()}@iannazzi.org
 DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
 DTSTART:${eventDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
 DTEND:${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-SUMMARY:Follow up with Just Legal Solutions
-DESCRIPTION:Reminder to connect with Joseph Iannazzi at Just Legal Solutions.
+SUMMARY:Follow up with Joseph Iannazzi
+DESCRIPTION:Reminder to connect with Joseph Iannazzi.
+Email: iannazzi@alumni.nsuok.edu
+Phone: 539-367-6832
 LOCATION:Tulsa, OK
 END:VEVENT
 END:VCALENDAR`;

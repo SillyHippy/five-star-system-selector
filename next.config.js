@@ -9,4 +9,5 @@ const nextConfig = {
   trailingSlash: true,
 };
 
+// Export the config directly - don't use redirects with export mode
 module.exports = nextConfig;
