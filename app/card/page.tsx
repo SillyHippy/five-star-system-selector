@@ -51,8 +51,8 @@ export default function CardPage() {
         <div className="flex items-center mb-4">
           <div className="w-[90px] h-[90px] bg-white rounded-full flex-shrink-0 mr-4 flex items-center justify-center overflow-hidden">
             <Image
-              src="/favicon1.svg"
-              alt="Just Legal Solutions Logo"
+              src="/images/personal.jpeg" // Changed logo to personal.jpeg
+              alt="Joseph Iannazzi"
               width={90}
               height={90}
               className="w-full h-full object-contain"
@@ -60,7 +60,7 @@ export default function CardPage() {
             />
           </div>
           <div>
-            <h2 className="text-[26px] font-bold text-white -mb-1" itemProp="worksFor">Just Legal Solutions</h2>
+            <h2 className="text-[26px] font-bold text-white -mb-1" itemProp="worksFor">Joseph Iannazzi</h2> {/* Changed text */}
           </div>
         </div>
 
@@ -68,11 +68,17 @@ export default function CardPage() {
         <div className="pl-1 mb-3">
           <h1 className="text-[28px] text-white mb-3" itemProp="name">Joseph Iannazzi</h1>
           <div className="flex flex-wrap gap-2">
-            <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm" itemProp="jobTitle">
-              Process Server
+            <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
+              HR Compliance Leader
             </span>
             <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
-              Legal Support
+              Legal & Logistics Operations Manager
+            </span>
+            <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
+              Project Management Expert
+            </span>
+            <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
+              Driving Efficiency in Multisector Environments
             </span>
           </div>
         </div>
@@ -80,7 +86,7 @@ export default function CardPage() {
         {/* Button Section */}
         <div className="space-y-3 mt-6">
           {/* Contact Details Button */}
-          <a href="/contact-details.vcf" download className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group">
+          <a href="/personal.vcf" download className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group">
             <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[65px] h-[65px]">
               <Image
                 src="/landingpage/icons/contact.svg"
@@ -95,7 +101,7 @@ export default function CardPage() {
           </a>
 
           {/* Email Button */}
-          <a href="mailto:Joseph@JustLegalSolutions.org" itemProp="email" className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group">
+          <a href="mailto:iannazzi@alumni.nsuok.edu" itemProp="email" className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group">
             <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[60px] h-[60px]">
               <Image
                 src="/landingpage/icons/mail.svg"
@@ -124,6 +130,21 @@ export default function CardPage() {
             <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
           </a>
 
+          {/* Send Text Message Button */}
+          <a href="sms:5393676832" className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group">
+            <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[65px] h-[65px]">
+              <Image
+                src="/landingpage/icons/imessage.svg"
+                alt="Send Text Message"
+                width={65}
+                height={65}
+                className="w-full h-full"
+              />
+            </div>
+            <span className="pl-12 text-base">Send Text Message</span>
+            <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
+          </a>
+
           {/* Calendar Button */}
           <a href="/card/calendar" className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group">
             <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[62px] h-[62px]">
@@ -139,20 +160,7 @@ export default function CardPage() {
             <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
           </a>
 
-          {/* Website Button */}
-          <a href="https://justlegalsolutions.org" itemProp="url" className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group">
-            <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[65px] h-[65px]">
-              <Image
-                src="/landingpage/icons/website1.svg"
-                alt="Website"
-                width={65}
-                height={65}
-                className="w-full h-full"
-              />
-            </div>
-            <span className="pl-12 text-base">Website</span>
-            <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
-          </a>
+          {/* Removed Website Button */}
 
           {/* LinkedIn Button */}
           <a
@@ -179,21 +187,35 @@ export default function CardPage() {
             onClick={handleResumeClick}
             className="relative flex items-center justify-between bg-[#2D3748] text-white p-5 rounded-lg hover:bg-[#4A5568] transition-colors group w-full"
           >
-            <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[60px] h-[60px]">
+            <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-[65px] h-[65px]"> {/* Adjusted icon size */}
               <Image
                 src="/landingpage/icons/document.svg"
                 alt="Resume"
-                width={60}
-                height={60}
+                width={65}
+                height={65}
                 className="w-full h-full"
               />
             </div>
             <span className="pl-12 text-base">View Resumes</span>
             <span className="text-xl transition-transform group-hover:translate-x-1">→</span>
           </button>
+          <p className="text-sm text-gray-400 mt-2">
+            Due to holding multiple hats while working for a small business, these are my tailored resumes towards specific roles.
+          </p>
+
+          {/* Removed Copy Card Link Button */}
         </div>
       </div>
-      <ShareModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <ShareModal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <button className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+          <img
+            alt="Link"
+            src="/favicon1.svg"
+            className="w-[24px] h-[24px]"
+          />
+          <span>Copy Card Link</span>
+        </button>
+      </ShareModal>
 
       {/* Resume Modal */}
       {isResumeModalOpen && (
