@@ -16,8 +16,10 @@ export default function HomePage() {
   const handleResumeClick = () => setIsResumeModalOpen(true);
   const handleCloseResumeModal = () => setIsResumeModalOpen(false);
 
-  const handleCalendarReminder = () => {
-    router.push('/'); // Redirect to home page instead
+  // Updated function to prevent default on click
+  const handleCalendarReminder = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    router.push('/card/calendar');
   };
 
   return (
