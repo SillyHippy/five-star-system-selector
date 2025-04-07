@@ -36,8 +36,8 @@ UID:${Date.now()}@justlegalsolutions.org
 DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
 DTSTART:${eventDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
 DTEND:${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-SUMMARY:Follow up with Just Legal Solutions
-DESCRIPTION:Reminder to connect with Joseph Iannazzi at Just Legal Solutions.
+SUMMARY:Follow up with Joseph Iannazzi 
+DESCRIPTION:Reminder to connect with Joseph Iannazzi
 LOCATION:Tulsa, OK
 END:VEVENT
 END:VCALENDAR`;
