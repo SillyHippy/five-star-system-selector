@@ -1,281 +1,172 @@
 "use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation'; // Import useRouter for navigation
-import ShareModal from './card/ShareModal'; // Adjusted import path for ShareModal
+import React, { useState } from "react";
+import Image from "next/image";
+import ShareModal from "./card/ShareModal";
+import ResumeModal from "./components/ResumeModal";
 
 export default function HomePage() {
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
-  const router = useRouter(); // Initialize router
 
-  const handleShareClick = () => setIsShareModalOpen(true);
-  const handleCloseShareModal = () => setIsShareModalOpen(false);
+  const handleShareClick = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   const handleResumeClick = () => setIsResumeModalOpen(true);
   const handleCloseResumeModal = () => setIsResumeModalOpen(false);
 
-  // Updated function to prevent default on click
-  const handleCalendarReminder = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    router.push('/card/calendar');
-  };
-
   return (
-    <div className="min-h-screen bg-[#0B132B] flex items-center justify-center p-4">
-      <div className="bg-[#1C2541] rounded-lg p-6 max-w-[420px] w-full shadow-lg relative space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0F1C] via-[#121D34] to-[#0A0F1C] flex items-center justify-center p-4 relative">
+      {/* Light effect */}
+      <div className="absolute top-[-100px] left-[-100px] w-[500px] h-[500px] bg-gradient-radial from-white/20 to-transparent rounded-full blur-[200px] opacity-50"></div>
+
+      <div className="bg-[#1B2738] rounded-[24px] p-8 max-w-[420px] w-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-md relative border border-[#2A3653]">
         {/* Share Icon */}
         <button
           onClick={handleShareClick}
-          className="absolute top-4 right-4 w-[30px] h-[30px] z-10 cursor-pointer"
+          className="absolute top-4 right-4 w-[40px] h-[40px] z-10 cursor-pointer border-none bg-transparent p-0"
           aria-label="Share"
         >
           <Image
             src="/landingpage/icons/share.svg"
             alt="Share"
-            width={30}
-            height={30}
+            width={20}
+            height={20}
+            className="w-full h-full"
           />
         </button>
 
-        {/* Profile Section */}
-        <div className="flex items-center mb-4">
-          <div className="w-[90px] h-[90px] bg-white rounded-full overflow-hidden mr-4">
+        {/* Top Profile Section */}
+        <div className="flex items-center mb-6">
+          <div className="w-[90px] h-[90px] bg-white rounded-full flex-shrink-0 mr-4 flex items-center justify-center overflow-hidden border-[1px] border-gray-100">
             <Image
               src="/images/personal.jpeg"
               alt="Joseph Iannazzi"
               width={90}
               height={90}
-              className="object-cover"
+              className="w-full h-full object-cover"
+              priority
             />
           </div>
           <div>
-            <h2 className="text-[26px] font-bold text-white">Joseph Iannazzi</h2>
+            <h2 className="text-[22px] font-semibold text-white leading-tight">
+              Joseph Iannazzi
+            </h2>
           </div>
         </div>
 
-        {/* Gray Buttons Section */}
-        <div className="flex flex-wrap gap-2 mt-4">
-          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
-            HR Compliance Leader
-          </span>
-          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
-            Legal & Logistics Operations Manager
-          </span>
-          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
-            Project Management Expert
-          </span>
-          <span className="inline-block px-3 py-1.5 bg-[#374151] text-[#E5E7EB] rounded-full text-sm">
-            Driving Efficiency in Multisector Environments
-          </span>
+        {/* Info Section */}
+        <div className="pl-1 mb-6">
+          <div className="flex flex-col gap-2">
+            <span className="inline-block px-4 py-2 bg-[#2A3B58] text-[#CBD5E1] rounded-full text-sm shadow-sm">
+              HR Compliance Leader
+            </span>
+            <span className="inline-block px-4 py-2 bg-[#2A3B58] text-[#CBD5E1] rounded-full text-sm shadow-sm">
+              Legal & Logistics Operations Manager
+            </span>
+            <span className="inline-block px-4 py-2 bg-[#2A3B58] text-[#CBD5E1] rounded-full text-sm shadow-sm">
+              Project Management Expert
+            </span>
+            <span className="inline-block px-4 py-2 bg-[#2A3B58] text-[#CBD5E1] rounded-full text-sm shadow-sm">
+              Driving Efficiency in Multisector Environments
+            </span>
+          </div>
         </div>
 
-        {/* Buttons Section */}
+        {/* Button Section */}
         <div className="space-y-4">
-          <a
-            href="/personal.vcf"
-            download
-            className="relative flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition"
-          >
-            <div className="absolute -left-5 top-1/2 transform -translate-y-1/2 w-13 h-13">
-              <Image
-                src="/landingpage/icons/contact.svg"
-                alt="Contact"
-                width={60} // updated from 40
-                height={60} // updated from 40
-                className="rounded-full"
-              />
-            </div>
-            <span className="pl-12">Download my contact details</span>
-            <span className="ml-auto text-xl">→</span>
-          </a>
-
-          <a
-            href="mailto:iannazzi@alumni.nsuok.edu"
-            className="relative flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition"
-          >
-            <div className="absolute -left-5 top-1/2 transform -translate-y-1/2 w-13 h-13">
-              <Image
-                src="/landingpage/icons/mail.svg"
-                alt="Email"
-                width={60} // updated from 40
-                height={60} // updated from 40
-                className="rounded-full"
-              />
-            </div>
-            <span className="pl-12">Email</span>
-            <span className="ml-auto text-xl">→</span>
-          </a>
-
-          <a
-            href="tel:+15393676832"
-            className="relative flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition"
-          >
-            <div className="absolute -left-5 top-1/2 transform -translate-y-1/2 w-13 h-13">
-              <Image
-                src="/landingpage/icons/phone.svg"
-                alt="Call"
-                width={60} // updated from 40
-                height={60} // updated from 40
-                className="rounded-full"
-              />
-            </div>
-            <span className="pl-12">Call</span>
-            <span className="ml-auto text-xl">→</span>
-          </a>
-
-          <a
-            href="sms:5393676832"
-            className="relative flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition"
-          >
-            <div className="absolute -left-5 top-1/2 transform -translate-y-1/2 w-13 h-13">
-              <Image
-                src="/landingpage/icons/imessage.svg"
-                alt="Text"
-                width={60} // updated from 40
-                height={60} // updated from 40
-                className="rounded-full"
-              />
-            </div>
-            <span className="pl-12">Send Text Message</span>
-            <span className="ml-auto text-xl">→</span>
-          </a>
-
-          <a
-            onClick={handleCalendarReminder}
-            className="relative flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition cursor-pointer"
-          >
-            <div className="absolute -left-5 top-1/2 transform -translate-y-1/2 w-13 h-13">
-              <Image
-                src="/landingpage/icons/calendar-reminder-icon.svg"
-                alt="Calendar"
-                width={60} // updated from 40
-                height={60} // updated from 40
-                className="rounded-full"
-              />
-            </div>
-            <span className="pl-12">Add a Reminder</span>
-            <span className="ml-auto text-xl">→</span>
-          </a>
-
-          <a
-            href="https://www.linkedin.com/in/joseph-iannazzi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition"
-          >
-            <div className="absolute -left-5 top-1/2 transform -translate-y-1/2 w-13 h-13">
-              <Image
-                src="/landingpage/icons/linkedin.svg"
-                alt="LinkedIn"
-                width={60} // updated from 40
-                height={60} // updated from 40
-                className="rounded-full"
-              />
-            </div>
-            <span className="pl-12">LinkedIn</span>
-            <span className="ml-auto text-xl">→</span>
-          </a>
-
-          <a
-            onClick={handleResumeClick}
-            className="relative flex items-center bg-[#2D3748] text-white p-4 rounded-lg hover:bg-[#4A5568] transition cursor-pointer"
-          >
-            <div className="absolute -left-5 top-1/2 transform -translate-y-1/2 w-13 h-13">
-              <Image
-                src="/landingpage/icons/document.svg"
-                alt="Resume"
-                width={60} // updated from 40
-                height={60} // updated from 40
-                className="rounded-full"
-              />
-            </div>
-            <span className="pl-12">View Resumes</span>
-            <span className="ml-auto text-xl">→</span>
-          </a>
-        </div>
-
-        {/* Resume Description */}
-        <div className="mt-6 text-center text-sm text-gray-400">
-          Due to holding multiple hats while working for a small business, these are my tailored resumes towards specific roles.
+          {[
+            {
+              href: "/contact-details.vcf",
+              icon: "/landingpage/icons/contact.svg",
+              label: "Download my contact details",
+              download: true,
+              customSize: "120%",
+              onClick: null
+            },
+            {
+              href: "mailto:iannazzi@alumni.nsuok.edu",
+              icon: "/landingpage/icons/mail.svg",
+              label: "Email",
+              customSize: "110%",
+              onClick: null
+            },
+            {
+              href: "tel:+15393676832",
+              icon: "/landingpage/icons/phone.svg",
+              label: "Call",
+              customSize: "120%",
+              onClick: null
+            },
+            {
+              href: "sms:+15393676832",
+              icon: "/landingpage/icons/imessage.svg",
+              label: "Message",
+              customSize: "120%",
+              onClick: null
+            },
+            {
+              href: "/calendar",
+              icon: "/landingpage/icons/calendar-reminder-icon.svg",
+              label: "Add a Reminder",
+              customSize: "150%",
+              onClick: null
+            },
+            {
+              href: "https://www.linkedin.com/in/joseph-iannazzi/",
+              icon: "/landingpage/icons/linkedin.svg",
+              label: "LinkedIn",
+              customSize: "140%",
+              onClick: null
+            },
+            {
+              href: "#",
+              icon: "/landingpage/icons/document.svg",
+              label: "View Resumes",
+              customSize: "130%",
+              onClick: handleResumeClick
+            }
+          ].map(({ href, icon, label, download, customSize, onClick }) => (
+            <a
+              key={label}
+              href={onClick ? "#" : href}
+              onClick={onClick}
+              {...(download ? { download: true } : {})}
+              className="relative flex items-center bg-[#1B2738] text-white h-[64px] px-8 rounded-[16px] hover:bg-[#263448] transition-all duration-200 group shadow-[0_6px_20px_rgba(0,0,0,0.4)]"
+            >
+              <div
+                className="absolute top-1/2 transform -translate-y-1/2 flex items-center justify-center bg-[#2A3B58] rounded-full overflow-hidden"
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  left: "-16px",
+                  boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.4)"
+                }}
+              >
+                <Image
+                  src={icon}
+                  alt={label}
+                  width={48}
+                  height={48}
+                  className="object-cover"
+                  style={{
+                    transform: `scale(${customSize})`
+                  }}
+                />
+              </div>
+              <span className="text-base font-medium text-white/90 group-hover:text-white pl-[56px]">
+                {label}
+              </span>
+              <span className="absolute right-4 text-xl font-bold text-white/70 group-hover:text-white transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </a>
+          ))}
         </div>
       </div>
-
-      {/* Share Modal */}
-      <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal} />
-
-      {/* Resume Modal */}
+      <ShareModal isOpen={isModalOpen} onClose={handleCloseModal} />
       {isResumeModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-[420px] shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">Select a Resume</h2>
-            <div className="space-y-3">
-              <a
-                href="/resumes/Administrative Assistant - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Administrative Assistant Resume
-              </a>
-              <a
-                href="/resumes/Project Manager - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Project Manager Resume
-              </a>
-              <a
-                href="/resumes/Process Server - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Process Server Resume
-              </a>
-              <a
-                href="/resumes/Payroll - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Payroll Resume
-              </a>
-              <a
-                href="/resumes/Office Assistant - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Office Assistant Resume
-              </a>
-              <a
-                href="/resumes/Legal Assistant - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Legal Assistant Resume
-              </a>
-              <a
-                href="/resumes/Human Resources Assistant - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Human Resources Assistant Resume
-              </a>
-              <a
-                href="/resumes/Executive Assistant - Resume.pdf"
-                download
-                className="block p-3 bg-[#F9FAFB] rounded-lg hover:bg-[#E5E7EB] transition-colors text-gray-800"
-              >
-                Executive Assistant Resume
-              </a>
-            </div>
-            <button
-              onClick={handleCloseResumeModal}
-              className="mt-4 w-full bg-[#3B82F6] text-white py-2 rounded-lg hover:bg-[#2563EB] transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <ResumeModal isOpen={isResumeModalOpen} onClose={handleCloseResumeModal} />
       )}
     </div>
   );
