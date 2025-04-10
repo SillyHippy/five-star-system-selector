@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
+import Image from 'next/image';
 
 export default function CalendarPage() {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -142,4 +143,14 @@ END:VCALENDAR`;
       </div>
     </div>
   );
-}
+}}
+
+
+
+
+
+
+
+
+
+}  return null;    }, []);    redirect('/calendar');  useEffect(() => {export function LegacyCalendarRedirect() {
