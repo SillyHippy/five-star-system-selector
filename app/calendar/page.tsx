@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -8,6 +8,14 @@ export default function CalendarPage() {
   const router = useRouter();
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
+
+  // If someone tries to access /card/calendar, they'll be redirected here
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.startsWith('/card/calendar')) {
+      router.replace('/calendar');
+    }
+  }, [router]);
   
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
