@@ -7,22 +7,22 @@ export const metadata: Metadata = {
   title: 'Joseph Iannazzi | Digital Business/Resume(s) Card',
   description: 'Digital Business/Resume(s) Card for Joseph Iannazzi.',
   openGraph: {
-    title: 'Joseph Iannazzi | Process Server',
-    description: 'Professional process server and legal support services by Joseph Iannazzi at Just Legal Solutions.',
+    title: 'Joseph Iannazzi | Digital Business/Resume(s) Card',
+    description: 'Digital Business/Resume(s) Card for Joseph Iannazzi.',
     images: [
       {
         url: '/preview.png',
         width: 1200,
         height: 630,
-        alt: 'Joseph Iannazzi - Just Legal Solutions',
+        alt: 'Joseph Iannazzi | Digital Business/Resume(s) Card',
       },
     ],
-    siteName: 'Just Legal Solutions',
+    siteName: 'Joseph Iannazzi | Digital Business/Resume(s) Card',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Joseph Iannazzi | Process Server',
-    description: 'Professional process server and legal support services',
+    title: 'Joseph Iannazzi | Digital Business/Resume(s) Card',
+    description: 'Joseph Iannazzi | Digital Business/Resume(s) Card',
     images: ['/preview.png'],
   }
 };
