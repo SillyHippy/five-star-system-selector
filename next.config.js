@@ -6,6 +6,15 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   trailingSlash: true, // Ensure trailing slash for routes
+  async redirects() {
+    return [
+      {
+        source: '/card',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
