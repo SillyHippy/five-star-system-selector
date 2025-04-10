@@ -33,18 +33,15 @@ export default function CalendarPage() {
     // Generate ICS content
     const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Joseph Iannazzi//Joseph Iannazzi//EN
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
+PRODID:-//Joseph Iannazzi//Calendar Reminder//EN
 BEGIN:VEVENT
-SUMMARY:Appointment with Joseph Iannazzi
-DESCRIPTION:Job Interview
+UID:${Date.now()}@justlegalsolutions.org
+DTSTAMP:${now}
 DTSTART:${startDate}
 DTEND:${endDate}
-DTSTAMP:${now}
-ORGANIZER;CN=Joseph Iannazzi:MAILTO:iannazzi@alumni.nsuok.edu
-URL:
-STATUS:CONFIRMED
+SUMMARY:Follow up with Joseph Iannazzi 
+DESCRIPTION:Reminder to connect with Joseph Iannazzi
+LOCATION:Tulsa, OK
 END:VEVENT
 END:VCALENDAR`;
     
@@ -64,7 +61,7 @@ END:VCALENDAR`;
     
     // Redirect after a short delay to ensure download starts
     setTimeout(() => {
-      router.push('/'); // Updated from /card to root path
+      router.push('/');
     }, 500);
   };
   
