@@ -9,7 +9,7 @@ export default function CalendarPage() {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (!date || !time) {
@@ -22,7 +22,7 @@ export default function CalendarPage() {
     const endDateTime = new Date(selectedDateTime.getTime() + 30 * 60000); // Fixed 30 minutes
     
     // Format dates for ICS file (in UTC format)
-    const formatDateForICS = (date) => {
+    const formatDateForICS = (date: Date): string => {
       return date.toISOString().replace(/-|:|\.\d+/g, '');
     };
     

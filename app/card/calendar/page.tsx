@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'; // Make sure Image is properly imported
 
 export default function CalendarPage() {
   const [isDownloading, setIsDownloading] = useState(false);
