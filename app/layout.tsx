@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://justlegalsolutions.org'), // Added metadataBase URL
+  metadataBase: new URL('https://electronic-resume.pages.dev'), // Added metadataBase URL
   title: 'Joseph Iannazzi | Digital Business/Resume(s) Card',
   description: 'Digital Business/Resume(s) Card for Joseph Iannazzi.',
   openGraph: {

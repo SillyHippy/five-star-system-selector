@@ -166,7 +166,7 @@ export default function HomePage() {
             </a>
           ))}
           <p className="text-sm text-[#CBD5E1] mt-2">
-            Due to holding multiple hats while working for a small business, these are my tailored resumes towards specific roles.
+          Due to wearing multiple hats while working for various businesses, these resumes are tailored to specific roles. Although my primary role was often that of an Executive Assistant, which involved a combination of responsibilities depending on the needs of my executive, I have gained experience in multiple aspects of business operations.
           </p>
         </div>
       </div>

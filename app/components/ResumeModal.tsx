@@ -37,11 +37,6 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
       icon: "/landingpage/icons/document.svg"
     },
     {
-      title: "Executive Assistant Resume",
-      path: "/resumes/Executive Assistant - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
-    },
-    {
       title: "Human Resources Assistant Resume",
       path: "/resumes/Human Resources Assistant - Resume.pdf",
       icon: "/landingpage/icons/document.svg"
@@ -105,7 +100,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           Close
         </button>
         <p className="text-sm text-[#CBD5E1] mt-4 text-center">
-          Due to holding multiple hats while working for a small business, these are my tailored resumes towards specific roles.
+        Due to wearing multiple hats while working for various businesses, these resumes are tailored to specific roles. Although my primary role was often that of an Executive Assistant, which involved a combination of responsibilities depending on the needs of my executive, I have gained experience in multiple aspects of business operations.
         </p>
       </div>
     </div>
