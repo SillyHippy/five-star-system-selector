@@ -25,7 +25,7 @@ export default function HomePage() {
   const handleCloseResumeModal = () => setIsResumeModalOpen(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0F1C] via-[#121D34] to-[#0A0F1C] flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0F1C] via-[#121D34] to-[#0A0F1C] flex justify-center pt-8 pb-4 relative">
       {/* Light effect */}
       <div className="absolute top-[-100px] left-[-100px] w-[500px] h-[500px] bg-gradient-radial from-white/20 to-transparent rounded-full blur-[200px] opacity-50"></div>
 
@@ -47,12 +47,12 @@ export default function HomePage() {
 
         {/* Top Profile Section */}
         <div className="flex items-center mb-6">
-          <div className="w-[90px] h-[90px] bg-white rounded-full flex-shrink-0 mr-4 flex items-center justify-center overflow-hidden border-[1px] border-gray-100">
+          <div className="w-[70px] h-[70px] bg-white rounded-full flex-shrink-0 mr-4 flex items-center justify-center overflow-hidden border-[1px] border-gray-100">
             <Image
               src="/images/personal.jpeg"
               alt="Joseph Iannazzi"
-              width={90}
-              height={90}
+              width={70}
+              height={70}
               className="w-full h-full object-cover"
               priority
             />
@@ -83,15 +83,15 @@ export default function HomePage() {
         </div>
 
         {/* About Me Section */}
-        <div className="pl-1 mb-6">
+        <div className="pl-1 mb-4">
           <h3 className="text-lg font-semibold text-white mb-2">About Me</h3>
           <p className="text-sm text-[#CBD5E1] leading-relaxed">
-            Executive Assistant and Business Operations Specialist with 10+ years of experience streamlining HR, legal, onboarding, and compliance operations. Open to full-time, part-time, On-site, remote, or hybrid roles.
+            Executive Assistant and Business Operations Specialist with 10+ years of experience streamlining HR, legal, onboarding, and compliance operations. Open to full-time, part-time, on-site, remote, or hybrid roles.
           </p>
         </div>
 
         {/* Button Section */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           {[
             {
               href: "/contact-details.vcf",
