@@ -82,6 +82,14 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* About Me Section */}
+        <div className="pl-1 mb-6">
+          <h3 className="text-lg font-semibold text-white mb-2">About Me</h3>
+          <p className="text-sm text-[#CBD5E1] leading-relaxed">
+            Executive Assistant and Business Operations Specialist with 10+ years of experience streamlining HR, legal, onboarding, and compliance operations. Open to full-time, part-time, remote, or hybrid roles.
+          </p>
+        </div>
+
         {/* Button Section */}
         <div className="space-y-4">
           {[
@@ -90,45 +98,45 @@ export default function HomePage() {
               icon: "/landingpage/icons/contact.svg",
               label: "Download my contact details",
               download: true,
-              customSize: "120%"
+              customSize: "120%",
             },
             {
               href: "mailto:iannazzi@alumni.nsuok.edu",
               icon: "/landingpage/icons/mail.svg",
               label: "Email",
-              customSize: "110%"
+              customSize: "110%",
             },
             {
               href: "tel:+15393676832",
               icon: "/landingpage/icons/phone.svg",
               label: "Call",
-              customSize: "120%"
+              customSize: "120%",
             },
             {
               href: "sms:+15393676832",
               icon: "/landingpage/icons/imessage.svg",
               label: "Message",
-              customSize: "120%"
+              customSize: "120%",
             },
             {
               href: "/calendar",
               icon: "/landingpage/icons/calendar-reminder-icon.svg",
               label: "Add a Reminder",
-              customSize: "150%"
+              customSize: "150%",
             },
             {
               href: "https://www.linkedin.com/in/joseph-iannazzi/",
               icon: "/landingpage/icons/linkedin.svg",
               label: "LinkedIn",
-              customSize: "140%"
+              customSize: "140%",
             },
             {
               href: "#",
               icon: "/landingpage/icons/document.svg",
               label: "View Resumes",
               customSize: "130%",
-              onClick: handleResumeClick
-            }
+              onClick: handleResumeClick,
+            },
           ].map(({ href, icon, label, download, customSize, onClick }) => (
             <a
               key={label}
@@ -143,7 +151,7 @@ export default function HomePage() {
                   width: "48px",
                   height: "48px",
                   left: "-16px",
-                  boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.4)"
+                  boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.4)",
                 }}
               >
                 <Image
@@ -153,7 +161,7 @@ export default function HomePage() {
                   height={48}
                   className="object-cover"
                   style={{
-                    transform: `scale(${customSize})`
+                    transform: `scale(${customSize})`,
                   }}
                 />
               </div>
@@ -166,10 +174,11 @@ export default function HomePage() {
             </a>
           ))}
           <p className="text-sm text-[#CBD5E1] mt-2">
-          Due to wearing multiple hats while working for various businesses, these resumes are tailored to specific roles. Although my primary role was often that of an Executive Assistant, which involved a combination of responsibilities depending on the needs of my executive, I have gained experience in multiple aspects of business operations.
+            Due to wearing multiple hats while working for various businesses, these resumes are tailored to specific roles. Although my primary role was often that of an Executive Assistant, which involved a combination of responsibilities depending on the needs of my executive, I have gained experience in multiple aspects of business operations.
           </p>
         </div>
       </div>
+
       <ShareModal isOpen={isModalOpen} onClose={handleCloseModal} />
       {isResumeModalOpen && (
         <ResumeModal isOpen={isResumeModalOpen} onClose={handleCloseResumeModal} />
