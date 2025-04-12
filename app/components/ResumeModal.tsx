@@ -34,38 +34,43 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
     {
       title: "Administrative Assistant Resume",
       path: "/resumes/Administrative Assistant - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
+      icon: "/landingpage/icons/document.svg",
     },
     {
       title: "Human Resources Assistant Resume",
       path: "/resumes/Human Resources Assistant - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
+      icon: "/landingpage/icons/document.svg",
     },
     {
       title: "Legal Assistant Resume",
       path: "/resumes/Legal Assistant - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
+      icon: "/landingpage/icons/document.svg",
     },
     {
       title: "Office Assistant Resume",
       path: "/resumes/Office Assistant - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
+      icon: "/landingpage/icons/document.svg",
     },
     {
       title: "Payroll Resume",
       path: "/resumes/Payroll - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
+      icon: "/landingpage/icons/document.svg",
     },
     {
       title: "Process Server Resume",
       path: "/resumes/Process Server - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
+      icon: "/landingpage/icons/document.svg",
     },
     {
       title: "Project Manager Resume",
       path: "/resumes/Project Manager - Resume.pdf",
-      icon: "/landingpage/icons/document.svg"
-    }
+      icon: "/landingpage/icons/document.svg",
+    },
+    {
+      title: "Executive Assistant Resume (Editing)", // New resume added
+      path: "/resumes/Executive assistant resume (editing).pdf",
+      icon: "/landingpage/icons/document.svg",
+    },
   ];
 
   return (
