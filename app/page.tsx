@@ -86,7 +86,7 @@ export default function HomePage() {
         <div className="pl-1 mb-6">
           <h3 className="text-lg font-semibold text-white mb-2">About Me</h3>
           <p className="text-sm text-[#CBD5E1] leading-relaxed">
-            Executive Assistant and Business Operations Specialist with 10+ years of experience streamlining HR, legal, onboarding, and compliance operations. Open to full-time, part-time, remote, or hybrid roles.
+            Executive Assistant and Business Operations Specialist with 10+ years of experience streamlining HR, legal, onboarding, and compliance operations. Open to full-time, part-time, On-site, remote, or hybrid roles.
           </p>
         </div>
 
