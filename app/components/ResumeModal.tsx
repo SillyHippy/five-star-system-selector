@@ -67,8 +67,8 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
       icon: "/landingpage/icons/document.svg",
     },
     {
-      title: "Executive Assistant Resume (Editing)", // New resume added
-      path: "/resumes/Executive assistant resume (editing).pdf",
+      title: "Executive Assistant Resume", // New resume added
+      path: "/resumes/Executive Assistant.pdf",
       icon: "/landingpage/icons/document.svg",
     },
   ];
